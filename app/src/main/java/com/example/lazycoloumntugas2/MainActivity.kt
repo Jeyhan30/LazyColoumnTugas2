@@ -4,21 +4,36 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.lazycoloumntugas2.navigation.Screen
+import com.example.lazycoloumntugas2.ui.screen.UserDetailScreen
 import com.example.lazycoloumntugas2.ui.screen.UserListScreen
 import com.example.lazycoloumntugas2.ui.theme.LazyColoumnTugas2Theme
-import com.example.lazycoloumntugas2.viewmodel.UserViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            LazyColoumnTugas2Theme {
-                val viewModel: UserViewModel = viewModel()
-                UserListScreen(viewModel = viewModel)
+            val navController = rememberNavController()
+
+            NavHost(navController = navController, startDestination = Screen.UserList.route) {
+                composable(Screen.UserList.route) {
+                    UserListScreen(navController)
+                }
+                composable(
+                    route = Screen.UserDetail.route,
+                    arguments = listOf(navArgument("userId") { type = NavType.IntType })
+                ) { backStackEntry ->
+                    val userId = backStackEntry.arguments?.getInt("userId") ?: 0
+                    UserDetailScreen(userId)
+                }
             }
         }
+
     }
 }

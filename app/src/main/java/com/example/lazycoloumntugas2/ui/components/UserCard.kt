@@ -1,6 +1,7 @@
 package com.example.lazycoloumntugas2.ui.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
@@ -16,12 +17,13 @@ import com.example.lazycoloumntugas2.data.model.User
 import com.example.lazycoloumntugas2.R
 
 @Composable
-fun UserCard(user: User) {
+fun UserCard(user: User,onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(10.dp)
             .fillMaxWidth()
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .clickable { onClick() },
         shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 5.dp),
         colors = CardDefaults.cardColors(
